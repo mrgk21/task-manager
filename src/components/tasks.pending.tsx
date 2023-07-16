@@ -18,7 +18,7 @@ const TasksPending = ({ list }: Props) => {
 				<div
 					{...provided.droppableProps}
 					ref={provided.innerRef}
-					className="border border-black mt-20 space-y-4"
+					className="border border-black space-y-4"
 				>
 					<div className="flex text-2xl items-center w-full">
 						<h2>Pending Tasks</h2>

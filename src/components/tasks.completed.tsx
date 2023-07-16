@@ -16,7 +16,7 @@ const TasksCompleted = ({ list }: Props) => {
 				<div
 					{...provided.droppableProps}
 					ref={provided.innerRef}
-					className="border border-black mt-20 space-y-4"
+					className="border border-black space-y-4"
 				>
 					<h2 className="text-2xl">Completed Tasks</h2>
 					<div className="flex flex-col text-black p-2">
