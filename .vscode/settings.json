@@ -1,8 +1,21 @@
 {
+	"prettier.tabWidth": 4,
+	"prettier.trailingComma": "all",
 	"prettier.useTabs": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.indentSize": "tabSize",
+	"explorer.sortOrder": "type",
+	"editor.insertSpaces": false,
 	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
 		"source.organizeImports": true
 	},
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "null"
+	},
 	"files.eol": "\r\n"
 }
