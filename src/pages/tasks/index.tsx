@@ -1,101 +1,60 @@
-import { faBars, faCircleCheck, faExclamation, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { memo, useCallback, useState } from "react";
-import { DragDropContext, Draggable, Droppable, OnDragEndResponder } from "react-beautiful-dnd";
+import { useCallback, useState } from "react";
+import { DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
+import TasksCompleted from "../../components/tasks.completed";
+import TasksPending from "../../components/tasks.pending";
+import { ITask } from "../../types";
 
-interface SingleTaskProps {
-	id: number;
-	index: number;
-	text: string;
-}
-
-const Task = memo(({ id, text, index }: SingleTaskProps) => {
-	const [isCompleted, setIsCompleted] = useState(false);
-	return (
-		<Draggable draggableId={id.toString()} index={index}>
-			{(provided) => (
-				<div ref={provided.innerRef} {...provided.draggableProps}>
-					<div className="flex items-center p-2 px-5 space-x-3 dark:border-black border w-[500px] h-[50px] rounded-md shadow-lg ">
-						<span {...provided.dragHandleProps}>
-							<FontAwesomeIcon icon={faBars} />
-						</span>
-						<div className="flex flex-grow  items-center">
-							<span className="text-xl">{text}</span>
-							<div className="space-x-2 ml-auto">
-								{isCompleted ? (
-									<FontAwesomeIcon
-										icon={faCircleCheck}
-										className="text-green-500 hover:cursor-pointer w-[20px] text-center"
-										onClick={() => setIsCompleted(false)}
-									/>
-								) : (
-									<FontAwesomeIcon
-										icon={faExclamation}
-										className="text-yellow-500 hover:cursor-pointer w-[20px] text-center"
-										onClick={() => setIsCompleted(true)}
-									/>
-								)}
-
-								<span className="hover:text-red-500 hover:cursor-pointer">
-									<FontAwesomeIcon icon={faTrash} />
-								</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			)}
-		</Draggable>
-	);
-});
-
-const data = [
-	{ id: 1, text: "hello guys" },
-	{ id: 2, text: "hello again" },
-	{ id: 3, text: "hello random text" },
-	{ id: 4, text: "end of list" },
+const data: ITask[] = [
+	{ _id: "i1", title: "hello guys", description: "abcd", isCompleted: false },
+	{ _id: "i2", title: "hello again", description: "abcd123", isCompleted: true },
+	{ _id: "i3", title: "hello random text", description: "abcd4545", isCompleted: false },
+	{ _id: "i4", title: "end of list", description: "2fjaslkfj", isCompleted: false },
+	{ _id: "i5", title: "hello again bro", description: "abcd123", isCompleted: true },
 ];
 
 const Tasks = () => {
-	const [list, setList] = useState(data);
+	const [pending, setPending] = useState(data.filter((item) => item.isCompleted));
+	const [completed, setCompleted] = useState(data.filter((item) => !item.isCompleted));
 
 	const onDragEnd: OnDragEndResponder = useCallback(
-		({ source, destination }) => {
+		({ source, destination, type }) => {
 			if (!destination) return;
 			console.log({ destination, source });
 
 			if (
-				destination.droppableId === source.droppableId &&
+				destination.droppableId !== source.droppableId &&
 				destination.index === source.index
 			)
 				return;
 
-			const newList = structuredClone(list) as typeof data;
-			const [draggedItem] = newList.splice(source.index, 1);
-			newList.splice(destination.index, 0, draggedItem);
-
-			setList(newList);
+			switch (type) {
+				case "pending": {
+					const newList = structuredClone(pending) as ITask[];
+					const [draggedItem] = newList.splice(source.index, 1);
+					newList.splice(destination.index, 0, draggedItem);
+					setPending(newList);
+					break;
+				}
+				case "completed": {
+					const newList = structuredClone(completed) as ITask[];
+					const [draggedItem] = newList.splice(source.index, 1);
+					newList.splice(destination.index, 0, draggedItem);
+					setCompleted(newList);
+					break;
+				}
+				default:
+					return;
+			}
 		},
-		[list],
+		[pending, completed],
 	);
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
-			<Droppable droppableId="droppable-tasks">
-				{(provided) => (
-					<div
-						{...provided.droppableProps}
-						ref={provided.innerRef}
-						className="border border-black"
-					>
-						<div className="flex flex-col mt-20  text-black">
-							{list.map((item, index) => (
-								<Task {...item} key={item.id} index={index} />
-							))}
-						</div>
-						{provided.placeholder}
-					</div>
-				)}
-			</Droppable>
+			<div className="flex justify-around">
+				<TasksPending list={pending} />
+				<TasksCompleted list={completed} />
+			</div>
 		</DragDropContext>
 	);
 };
