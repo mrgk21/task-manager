@@ -11,7 +11,6 @@ interface Props {
 
 const Task = ({ task: { _id, description, title }, index }: Props) => {
 	const [isCompleted, setIsCompleted] = useState(false);
-	const [readMore, setReadMore] = useState(false);
 	return (
 		<Draggable draggableId={_id} index={index}>
 			{(provided) => (
