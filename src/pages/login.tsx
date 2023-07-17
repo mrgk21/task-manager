@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import * as yup from "yup";
 import { isAuthSelector } from "../feaures/auth/auth.selectors";
 import { authActions } from "../feaures/auth/auth.slice";
+import { taskGroupActions } from "../feaures/taskGroup/taskGroup.slice";
 
 interface CustomElements extends HTMLFormControlsCollection {
 	username: HTMLInputElement;
@@ -36,6 +37,7 @@ const Login = () => {
 				{ abortEarly: false },
 			);
 			dispatch(authActions.loginUser(result.username));
+			dispatch(taskGroupActions.init());
 		} catch (error: unknown) {
 			const errs: typeof errors = {};
 

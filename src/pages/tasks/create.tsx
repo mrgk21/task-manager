@@ -44,7 +44,6 @@ const CreateTask = () => {
 			dispatch(
 				taskGroupActions.createTask({
 					task: { id: uuid(), isCompleted: false, ...result },
-					owner: currUser as string,
 				}),
 			);
 			ref.current?.reset();

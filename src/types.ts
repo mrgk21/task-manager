@@ -1,7 +1,9 @@
 export interface ITaskGroup {
-	completed: ITask[];
-	pending: ITask[];
-	owner: string | null;
+	[k: string]: {
+		completed: ITask[];
+		pending: ITask[];
+		owner: string | null;
+	};
 }
 
 export interface ITask {

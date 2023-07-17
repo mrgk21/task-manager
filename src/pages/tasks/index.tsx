@@ -23,6 +23,8 @@ const Tasks = () => {
 	const completed = useSelector(completedTasksSelector);
 	const dispatch = useDispatch();
 
+	console.log({ pending, completed });
+
 	const onDragEnd: OnDragEndResponder = useCallback(
 		({ source, destination, type }) => {
 			if (!destination) return;
@@ -65,8 +67,8 @@ const Tasks = () => {
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<div className="flex justify-around">
-				<TasksPending list={pending} />
-				<TasksCompleted list={completed} />
+				<TasksPending list={pending ?? []} />
+				<TasksCompleted list={completed ?? []} />
 			</div>
 		</DragDropContext>
 	);

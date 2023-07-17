@@ -1,17 +1,24 @@
 import { RootState } from "../store";
 
-export const pendingTasksSelector = (state: RootState) => state.taskGroup.pending;
-export const completedTasksSelector = (state: RootState) => state.taskGroup.completed;
+export const pendingTasksSelector = (state: RootState) => {
+	const owner = localStorage.getItem("currentUser") ?? "";
+	return state.taskGroup[owner]?.pending;
+};
+export const completedTasksSelector = (state: RootState) => {
+	const owner = localStorage.getItem("currentUser") ?? "";
+	return state.taskGroup[owner]?.completed;
+};
 export const getTaskSelector = (id: string, isCompleted: boolean) => {
+	const owner = localStorage.getItem("currentUser") ?? "";
 	if (isCompleted) {
 		return (state: RootState) => {
-			const index = state.taskGroup.completed.findIndex((item) => item.id === id);
-			return state.taskGroup.completed[index];
+			const index = state.taskGroup[owner].completed.findIndex((item) => item.id === id);
+			return state.taskGroup[owner]?.completed[index];
 		};
 	} else {
 		return (state: RootState) => {
-			const index = state.taskGroup.pending.findIndex((item) => item.id === id);
-			return state.taskGroup.pending[index];
+			const index = state.taskGroup[owner].pending.findIndex((item) => item.id === id);
+			return state.taskGroup[owner]?.pending[index];
 		};
 	}
 };

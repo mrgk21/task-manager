@@ -1,29 +1,40 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ITask, ITaskGroup } from "../../types";
 
-const initialState: ITaskGroup = {
+const initialState: ITaskGroup = {};
+
+const initState: ITaskGroup[""] = {
 	completed: [],
 	pending: [],
-	owner: null,
+	owner: "",
 };
 
 const taskGroupSlice = createSlice({
 	name: "taskGroup",
 	initialState,
 	reducers: {
-		createTask: (state, action: PayloadAction<{ task: ITask; owner: string }>) => {
-			const { task, owner } = action.payload;
-			state.pending = [...state.pending, task];
-			state.owner = owner;
+		init: (state) => {
+			const owner = localStorage.getItem("currentUser") ?? "";
+			if (!state[owner]) state[owner] = initState;
+		},
+		createTask: (state, action: PayloadAction<{ task: ITask }>) => {
+			const { task } = action.payload;
+			const owner = localStorage.getItem("currentUser") ?? "";
+			console.log(owner);
+
+			state[owner].pending = [...(state[owner].pending ?? []), task];
+
+			// state.owner = owner;
 		},
 		deleteTask: (state, action: PayloadAction<{ id: string; completed: boolean }>) => {
 			const { id, completed } = action.payload;
+			const owner = localStorage.getItem("currentUser") ?? "";
 			if (completed) {
-				const newCompleted = state.completed.filter((item) => item.id !== id);
-				state.completed = newCompleted;
+				const newCompleted = state[owner].completed.filter((item) => item.id !== id);
+				state[owner].completed = newCompleted;
 			} else {
-				const newPending = state.pending.filter((item) => item.id !== id);
-				state.pending = newPending;
+				const newPending = state[owner].pending.filter((item) => item.id !== id);
+				state[owner].pending = newPending;
 			}
 		},
 		updateTask: (
@@ -36,34 +47,37 @@ const taskGroupSlice = createSlice({
 		) => {
 			const { id, task, isCompleted } = action.payload;
 			const { title, description } = task;
+			const owner = localStorage.getItem("currentUser") ?? "";
+
 			if (isCompleted) {
-				const index = state.completed.findIndex((item) => item.id === id);
-				if (title) state.completed[index].title = title;
-				if (description) state.completed[index].description = description;
+				const index = state[owner].completed.findIndex((item) => item.id === id);
+				if (title) state[owner].completed[index].title = title;
+				if (description) state[owner].completed[index].description = description;
 			} else {
-				const index = state.pending.findIndex((item) => item.id === id);
-				if (title) state.pending[index].title = title;
-				if (description) state.pending[index].description = description;
+				const index = state[owner].pending.findIndex((item) => item.id === id);
+				if (title) state[owner].pending[index].title = title;
+				if (description) state[owner].pending[index].description = description;
 			}
 		},
 		completeTask: (state, action: PayloadAction<{ id: string; isCompleted: boolean }>) => {
 			const { id, isCompleted } = action.payload;
+			const owner = localStorage.getItem("currentUser") ?? "";
 			if (isCompleted) {
 				// if isCompleted is true, meaning task was previously pending
-				const index = state.pending.findIndex((item) => item.id === id);
-				const newList = state.pending;
+				const index = state[owner].pending.findIndex((item) => item.id === id);
+				const newList = state[owner].pending;
 				const [item] = newList.splice(index, 1);
 				item.isCompleted = true;
-				state.pending = newList;
-				state.completed = [...state.completed, item];
+				state[owner].pending = newList;
+				state[owner].completed = [...state[owner].completed, item];
 			} else {
 				// if isCompleted is false, meaning task was previously completed
-				const index = state.completed.findIndex((item) => item.id === id);
-				const newList = state.completed;
+				const index = state[owner].completed.findIndex((item) => item.id === id);
+				const newList = state[owner].completed;
 				const [item] = newList.splice(index, 1);
 				item.isCompleted = false;
-				state.completed = newList;
-				state.pending = [...state.pending, item];
+				state[owner].completed = newList;
+				state[owner].pending = [...state[owner].pending, item];
 			}
 		},
 		reorderTasks: (
@@ -71,16 +85,17 @@ const taskGroupSlice = createSlice({
 			action: PayloadAction<{ prevInd: number; nextInd: number; completed: boolean }>,
 		) => {
 			const { nextInd, prevInd, completed } = action.payload;
+			const owner = localStorage.getItem("currentUser") ?? "";
 			if (completed) {
-				const newList = state.completed;
+				const newList = state[owner].completed;
 				const [draggedItem] = newList.splice(prevInd, 1);
 				newList.splice(nextInd, 0, draggedItem);
-				state.completed = newList;
+				state[owner].completed = newList;
 			} else {
-				const newList = state.pending;
+				const newList = state[owner].pending;
 				const [draggedItem] = newList.splice(prevInd, 1);
 				newList.splice(nextInd, 0, draggedItem);
-				state.pending = newList;
+				state[owner].pending = newList;
 			}
 		},
 	},
