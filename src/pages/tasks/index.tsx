@@ -8,28 +8,15 @@ import {
 	pendingTasksSelector,
 } from "../../feaures/taskGroup/taskGroup.selectors";
 import { taskGroupActions } from "../../feaures/taskGroup/taskGroup.slice";
-import { ITask } from "../../types";
-
-const data: ITask[] = [
-	{ id: "i1", title: "hello guys", description: "abcd", isCompleted: false },
-	{ id: "i2", title: "hello again", description: "abcd123", isCompleted: true },
-	{ id: "i3", title: "hello random text", description: "abcd4545", isCompleted: false },
-	{ id: "i4", title: "end of list", description: "2fjaslkfj", isCompleted: false },
-	{ id: "i5", title: "hello again bro", description: "abcd123", isCompleted: true },
-];
 
 const Tasks = () => {
 	const pending = useSelector(pendingTasksSelector);
 	const completed = useSelector(completedTasksSelector);
 	const dispatch = useDispatch();
 
-	console.log({ pending, completed });
-
 	const onDragEnd: OnDragEndResponder = useCallback(
 		({ source, destination, type }) => {
 			if (!destination) return;
-			console.log({ destination, source });
-
 			if (
 				destination.droppableId !== source.droppableId &&
 				destination.index === source.index

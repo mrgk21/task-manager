@@ -27,12 +27,9 @@ const taskGroupSlice = createSlice({
 			const owner = localStorage.getItem("currentUser") ?? "";
 			if (isCompleted) {
 				const newCompleted = state[owner].completed.filter((item) => item.id !== id);
-				console.log(newCompleted);
-
 				state[owner].completed = newCompleted;
 			} else {
 				const newPending = state[owner].pending.filter((item) => item.id !== id);
-				console.log(newPending);
 				state[owner].pending = newPending;
 			}
 		},

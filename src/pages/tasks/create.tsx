@@ -1,11 +1,10 @@
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import * as yup from "yup";
-import { currUserSelector } from "../../feaures/auth/auth.selectors";
 import { taskGroupActions } from "../../feaures/taskGroup/taskGroup.slice";
 
 interface CustomElements extends HTMLFormControlsCollection {
@@ -23,7 +22,6 @@ const taskSchema = yup.object().shape({
 });
 
 const CreateTask = () => {
-	const currUser = useSelector(currUserSelector);
 	const dispatch = useDispatch();
 
 	const [errors, setErrors] = useState<{ [k: string]: string | null }>({});
@@ -47,7 +45,6 @@ const CreateTask = () => {
 				}),
 			);
 			ref.current?.reset();
-			console.log("task created!");
 		} catch (error: unknown) {
 			const errs: typeof errors = {};
 
