@@ -24,6 +24,10 @@ const Task = ({ task: { id, description, title, isCompleted }, index }: Props) =
 		dispatch(taskGroupActions.completeTask({ id, isCompleted: val }));
 	};
 
+	const handleDelete = () => {
+		dispatch(taskGroupActions.deleteTask({ id, isCompleted }));
+	};
+
 	return (
 		<Draggable draggableId={id} index={index}>
 			{(provided) => (
@@ -59,6 +63,7 @@ const Task = ({ task: { id, description, title, isCompleted }, index }: Props) =
 									<FontAwesomeIcon
 										icon={faTrash}
 										className="hover:text-red-500 hover:cursor-pointer"
+										onClick={handleDelete}
 									/>
 								</div>
 							</div>

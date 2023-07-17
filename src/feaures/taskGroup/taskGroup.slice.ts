@@ -20,20 +20,19 @@ const taskGroupSlice = createSlice({
 		createTask: (state, action: PayloadAction<{ task: ITask }>) => {
 			const { task } = action.payload;
 			const owner = localStorage.getItem("currentUser") ?? "";
-			console.log(owner);
-
 			state[owner].pending = [...(state[owner].pending ?? []), task];
-
-			// state.owner = owner;
 		},
-		deleteTask: (state, action: PayloadAction<{ id: string; completed: boolean }>) => {
-			const { id, completed } = action.payload;
+		deleteTask: (state, action: PayloadAction<{ id: string; isCompleted: boolean }>) => {
+			const { id, isCompleted } = action.payload;
 			const owner = localStorage.getItem("currentUser") ?? "";
-			if (completed) {
+			if (isCompleted) {
 				const newCompleted = state[owner].completed.filter((item) => item.id !== id);
+				console.log(newCompleted);
+
 				state[owner].completed = newCompleted;
 			} else {
 				const newPending = state[owner].pending.filter((item) => item.id !== id);
+				console.log(newPending);
 				state[owner].pending = newPending;
 			}
 		},
