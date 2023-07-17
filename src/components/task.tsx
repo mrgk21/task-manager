@@ -32,7 +32,7 @@ const Task = ({ task: { id, description, title, isCompleted }, index }: Props) =
 		<Draggable draggableId={id} index={index}>
 			{(provided) => (
 				<div ref={provided.innerRef} {...provided.draggableProps}>
-					<div className="flex items-center p-2 px-5 space-x-3 dark:border-black border w-[500px] rounded-md shadow-lg ">
+					<div className="flex items-center p-2 px-5 space-x-3 border-black border lg:w-[33vw] rounded-md shadow-lg mt-4">
 						<span {...provided.dragHandleProps} className="mt-2.5 self-start w-[5%]">
 							<FontAwesomeIcon icon={faBars} size="lg" />
 						</span>

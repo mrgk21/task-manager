@@ -58,20 +58,22 @@ const CreateTask = () => {
 		}
 	};
 
-	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const errs = { ...errors };
 		errs[event.target.name] = null;
 		setErrors(errs);
 	};
 
 	return (
-		<div className="mx-auto max-w-lg space-y-2">
-			<h1 className="text-2xl">Create a new task</h1>
+		<div className="mx-auto max-w-lg space-y-2 mt-5">
+			<h1 className="text-3xl font-semibold">Create a new task</h1>
 			<form onSubmit={handleSubmit} className="flex flex-col space-y-2" ref={ref}>
-				<div className="flex flex-col">
-					<label htmlFor="task_title">Edit task: {}</label>
+				<div className="flex flex-col shadow-lg">
+					<label htmlFor="task_title" className="underline underline-offset-1">
+						Enter a title
+					</label>
 					{errors.title && (
-						<label htmlFor="task_title" className="text-red-500 text-sm">
+						<label htmlFor="task_title" className="text-red-500 text-xs">
 							{errors.title}
 						</label>
 					)}
@@ -79,27 +81,32 @@ const CreateTask = () => {
 						type="text"
 						name="title"
 						id="task_title"
-						className="p-1"
+						className="p-1 border border-black rounded-sm focus:border-slate-300"
 						onChange={handleChange}
 					/>
 				</div>
 
-				<div className="flex flex-col">
-					<label htmlFor="task_description">Enter a description</label>
+				<div className="flex flex-col shadow-lg">
+					<label htmlFor="task_description" className="underline underline-offset-1">
+						Enter a description
+					</label>
 					{errors.description && (
-						<label htmlFor="task_description" className="text-red-500 text-sm">
+						<label htmlFor="task_description" className="text-red-500 text-xs">
 							{errors.description}
 						</label>
 					)}
-					<input
-						type="text"
+					<textarea
 						name="description"
 						id="task_description"
-						className="p-1"
+						className="p-1 border border-black rounded-sm focus:border-slate-300"
+						rows={4}
 						onChange={handleChange}
 					/>
 				</div>
-				<button type="submit" className="border border-black p-2 rounded-md">
+				<button
+					type="submit"
+					className="border border-black p-2 rounded-md hover:bg-slate-300 focus:bg-slate-300"
+				>
 					Create a task
 				</button>
 			</form>

@@ -61,12 +61,14 @@ const Login = () => {
 
 	return (
 		<div className="mx-auto max-w-lg space-y-2 mt-5">
-			<h1 className="text-2xl">Login</h1>
+			<h1 className="text-3xl font-semibold">Login</h1>
 			<form onSubmit={handleSubmit} className="flex flex-col space-y-2">
-				<div className="flex flex-col">
-					<label htmlFor="username">Whats your username?</label>
+				<div className="flex flex-col shadow-lg">
+					<label htmlFor="username" className="underline underline-offset-1">
+						Whats your username?
+					</label>
 					{errors.username && (
-						<label className="text-sm text-red-500">{errors.username}</label>
+						<label className="text-xs text-red-500">{errors.username}</label>
 					)}
 					<input
 						type="text"
@@ -74,11 +76,14 @@ const Login = () => {
 						id="username"
 						placeholder="Enter username"
 						onChange={handleChange}
-						className="p-1"
+						className="p-1 border border-black rounded-sm focus:border-slate-300"
 					/>
 				</div>
 
-				<button type="submit" className="border border-black p-2 rounded-md">
+				<button
+					type="submit"
+					className="border border-black p-2 rounded-md hover:bg-slate-300 focus:bg-slate-300"
+				>
 					Login <FontAwesomeIcon icon={faArrowRightLong} />
 				</button>
 			</form>

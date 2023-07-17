@@ -11,25 +11,29 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="sticky flex justify-center items-center space-x-32 h-[8vh] border border-black">
+		<nav className="sticky flex justify-end px-10 items-center space-x-8 min-h-[8vh] bg-gradient-to-r from-slate-500 via-slate-200 to-white">
 			<NavLink
 				to="/tasks"
 				end
-				className={({ isActive, isPending }) =>
-					isActive ? "bg-gray-300 p-1 rounded-md" : isPending ? "p-1 rounded-md" : ""
+				className={({ isActive }) =>
+					`${isActive && "bg-slate-300"} p-1 px-2 rounded-md border border-black`
 				}
 			>
 				View tasks
 			</NavLink>
 			<NavLink
 				to="/tasks/create"
-				className={({ isActive, isPending }) =>
-					isActive ? "bg-gray-300 p-1 rounded-md" : isPending ? "p-1 rounded-md" : ""
+				className={({ isActive }) =>
+					`${isActive && "bg-slate-300"} p-1 px-2 rounded-md border border-black`
 				}
 			>
 				Create a task
 			</NavLink>
-			<button type="button" className="underline underline-offset-2" onClick={handleLogout}>
+			<button
+				type="button"
+				className="underline underline-offset-2 hover:text-red-500"
+				onClick={handleLogout}
+			>
 				Logout
 			</button>
 		</nav>

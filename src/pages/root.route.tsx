@@ -1,10 +1,16 @@
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject } from "react-router-dom";
 import RootLayout from "../layouts/root.layout";
 import Error404 from "./404";
 import Login from "./login";
 import Tasks from "./tasks";
 import CreateTask from "./tasks/create";
 import EditTask from "./tasks/edit";
+
+export const rootRoute: RouteObject = {
+	path: "/",
+	element: <Navigate to="/login" />,
+	errorElement: <Error404 />,
+};
 
 export const loginRoute: RouteObject = {
 	path: "login",

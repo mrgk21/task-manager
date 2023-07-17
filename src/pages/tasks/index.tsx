@@ -53,7 +53,7 @@ const Tasks = () => {
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
-			<div className="flex justify-around">
+			<div className="flex lg:justify-around lg:flex-row flex-col items-center">
 				<TasksPending list={pending ?? []} />
 				<TasksCompleted list={completed ?? []} />
 			</div>
