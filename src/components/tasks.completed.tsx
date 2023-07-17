@@ -21,7 +21,7 @@ const TasksCompleted = ({ list }: Props) => {
 					<h2 className="text-2xl">Completed Tasks</h2>
 					<div className="flex flex-col text-black p-2">
 						{list.map((item, index) => (
-							<MemoTask task={item} key={item._id} index={index} />
+							<MemoTask task={item} key={item.id} index={index} />
 						))}
 					</div>
 					{provided.placeholder}

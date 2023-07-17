@@ -29,7 +29,7 @@ const TasksPending = ({ list }: Props) => {
 					</div>
 					<div className="flex flex-col text-black p-2">
 						{list.map((item, index) => (
-							<MemoTask task={item} key={item._id} index={index} />
+							<MemoTask task={item} key={item.id} index={index} />
 						))}
 					</div>
 					{provided.placeholder}

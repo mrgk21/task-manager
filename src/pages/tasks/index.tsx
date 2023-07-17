@@ -5,11 +5,11 @@ import TasksPending from "../../components/tasks.pending";
 import { ITask } from "../../types";
 
 const data: ITask[] = [
-	{ _id: "i1", title: "hello guys", description: "abcd", isCompleted: false },
-	{ _id: "i2", title: "hello again", description: "abcd123", isCompleted: true },
-	{ _id: "i3", title: "hello random text", description: "abcd4545", isCompleted: false },
-	{ _id: "i4", title: "end of list", description: "2fjaslkfj", isCompleted: false },
-	{ _id: "i5", title: "hello again bro", description: "abcd123", isCompleted: true },
+	{ id: "i1", title: "hello guys", description: "abcd", isCompleted: false },
+	{ id: "i2", title: "hello again", description: "abcd123", isCompleted: true },
+	{ id: "i3", title: "hello random text", description: "abcd4545", isCompleted: false },
+	{ id: "i4", title: "end of list", description: "2fjaslkfj", isCompleted: false },
+	{ id: "i5", title: "hello again bro", description: "abcd123", isCompleted: true },
 ];
 
 const Tasks = () => {
