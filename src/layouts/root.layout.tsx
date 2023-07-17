@@ -10,7 +10,7 @@ const RootLayout = () => {
 
 	if (!isAuthenticated) {
 		window.location.href = "/login";
-		return;
+		return null;
 	}
 
 	useEffect(() => {
