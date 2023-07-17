@@ -2,7 +2,7 @@ import { faArrowLeftLong, faFloppyDisk } from "@fortawesome/free-solid-svg-icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { getTaskSelector } from "../../feaures/taskGroup/taskGroup.selectors";
 import { taskGroupActions } from "../../feaures/taskGroup/taskGroup.slice";
@@ -22,10 +22,13 @@ const taskSchema = yup.object().shape({
 });
 
 const EditTask = () => {
-	const { id } = useParams();
 	const navigate = useNavigate();
 
-	const task = useSelector(getTaskSelector(id as string, false));
+	const { id } = useParams();
+	const [params] = useSearchParams();
+	const isCompleted = params.get("isCompleted");
+
+	const task = useSelector(getTaskSelector(id as string, !(isCompleted == undefined)));
 	const dispatch = useDispatch();
 
 	const [errors, setErrors] = useState<{ [k: string]: string | null }>({});

@@ -40,14 +40,15 @@ const Task = ({ task: { id, description, title, isCompleted }, index }: Props) =
 							<div className="flex items-center mt-2">
 								<span className="text-xl">{title}</span>
 								<div className="space-x-2 ml-auto">
-									{!isCompleted && (
-										<Link to={`edit/${id}`} relative="path">
-											<FontAwesomeIcon
-												icon={faPen}
-												className="hover:text-lime-300 hover:cursor-pointer"
-											/>
-										</Link>
-									)}
+									<Link
+										to={`edit/${id}${isCompleted ? "?isCompleted" : ""}`}
+										relative="path"
+									>
+										<FontAwesomeIcon
+											icon={faPen}
+											className="hover:text-lime-300 hover:cursor-pointer"
+										/>
+									</Link>
 									{isCompleted ? (
 										<FontAwesomeIcon
 											icon={faCircleCheck}
