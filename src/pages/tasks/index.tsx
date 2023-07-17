@@ -1,7 +1,13 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { DragDropContext, OnDragEndResponder } from "react-beautiful-dnd";
+import { useDispatch, useSelector } from "react-redux";
 import TasksCompleted from "../../components/tasks.completed";
 import TasksPending from "../../components/tasks.pending";
+import {
+	completedTasksSelector,
+	pendingTasksSelector,
+} from "../../feaures/taskGroup/taskGroup.selectors";
+import { taskGroupActions } from "../../feaures/taskGroup/taskGroup.slice";
 import { ITask } from "../../types";
 
 const data: ITask[] = [
@@ -13,8 +19,9 @@ const data: ITask[] = [
 ];
 
 const Tasks = () => {
-	const [pending, setPending] = useState(data.filter((item) => item.isCompleted));
-	const [completed, setCompleted] = useState(data.filter((item) => !item.isCompleted));
+	const pending = useSelector(pendingTasksSelector);
+	const completed = useSelector(completedTasksSelector);
+	const dispatch = useDispatch();
 
 	const onDragEnd: OnDragEndResponder = useCallback(
 		({ source, destination, type }) => {
@@ -29,17 +36,23 @@ const Tasks = () => {
 
 			switch (type) {
 				case "pending": {
-					const newList = structuredClone(pending) as ITask[];
-					const [draggedItem] = newList.splice(source.index, 1);
-					newList.splice(destination.index, 0, draggedItem);
-					setPending(newList);
+					dispatch(
+						taskGroupActions.reorderTasks({
+							prevInd: source.index,
+							nextInd: destination.index,
+							completed: false,
+						}),
+					);
 					break;
 				}
 				case "completed": {
-					const newList = structuredClone(completed) as ITask[];
-					const [draggedItem] = newList.splice(source.index, 1);
-					newList.splice(destination.index, 0, draggedItem);
-					setCompleted(newList);
+					dispatch(
+						taskGroupActions.reorderTasks({
+							prevInd: source.index,
+							nextInd: destination.index,
+							completed: true,
+						}),
+					);
 					break;
 				}
 				default:

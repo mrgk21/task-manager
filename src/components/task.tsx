@@ -1,7 +1,14 @@
-import { faBars, faCircleCheck, faExclamation, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+	faBars,
+	faCircleCheck,
+	faExclamation,
+	faPen,
+	faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { useDispatch } from "react-redux";
+import { taskGroupActions } from "../feaures/taskGroup/taskGroup.slice";
 import { ITask } from "../types";
 
 interface Props {
@@ -9,8 +16,12 @@ interface Props {
 	index: number;
 }
 
-const Task = ({ task: { id, description, title }, index }: Props) => {
-	const [isCompleted, setIsCompleted] = useState(false);
+const Task = ({ task: { id, description, title, isCompleted }, index }: Props) => {
+	const dispatch = useDispatch();
+
+	const handleComplete = (val: boolean) => {
+		dispatch(taskGroupActions.completeTask({ id, isCompleted: val }));
+	};
 	return (
 		<Draggable draggableId={id} index={index}>
 			{(provided) => (
@@ -23,36 +34,31 @@ const Task = ({ task: { id, description, title }, index }: Props) => {
 							<div className="flex items-center mt-2">
 								<span className="text-xl">{title}</span>
 								<div className="space-x-2 ml-auto">
+									<FontAwesomeIcon
+										icon={faPen}
+										className="hover:text-lime-300 hover:cursor-pointer"
+									/>
 									{isCompleted ? (
 										<FontAwesomeIcon
 											icon={faCircleCheck}
 											className="text-green-500 hover:cursor-pointer w-[20px] text-center"
-											onClick={() => setIsCompleted(false)}
+											onClick={() => handleComplete(false)}
 										/>
 									) : (
 										<FontAwesomeIcon
 											icon={faExclamation}
 											className="text-yellow-500 hover:cursor-pointer w-[20px] text-center"
-											onClick={() => setIsCompleted(true)}
+											onClick={() => handleComplete(true)}
 										/>
 									)}
-									<span className="hover:text-red-500 hover:cursor-pointer">
-										<FontAwesomeIcon icon={faTrash} />
-									</span>
+
+									<FontAwesomeIcon
+										icon={faTrash}
+										className="hover:text-red-500 hover:cursor-pointer"
+									/>
 								</div>
 							</div>
-							<p className="text-sm line-clamp-3">
-								{description}
-								Lorem Ipsum is simply dummy text of the printing and typesetting
-								industry. Lorem Ipsum has been the industrys standard dummy text
-								ever since the 1500s, when an unknown printer took a galley of type
-								and scrambled it to make a type specimen book. It has survived not
-								only five centuries, but also the leap into electronic typesetting,
-								remaining essentially unchanged. It was popularised in the 1960s
-								with the release of Letraset sheets containing Lorem Ipsum passages,
-								and more recently with desktop publishing software like Aldus
-								PageMaker including versions of Lorem Ipsum.
-							</p>
+							<p className="text-sm line-clamp-3">{description} </p>
 						</div>
 					</div>
 				</div>

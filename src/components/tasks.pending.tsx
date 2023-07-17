@@ -2,6 +2,7 @@ import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
 import { ITask } from "../types";
 import Task from "./task";
 
@@ -22,10 +23,12 @@ const TasksPending = ({ list }: Props) => {
 				>
 					<div className="flex text-2xl items-center w-full">
 						<h2>Pending Tasks</h2>
-						<FontAwesomeIcon
-							icon={faSquarePlus}
-							className="ml-auto hover:cursor-pointer hover:text-blue-500"
-						/>
+						<Link to="/tasks/create">
+							<FontAwesomeIcon
+								icon={faSquarePlus}
+								className="ml-auto hover:cursor-pointer hover:text-blue-500"
+							/>
+						</Link>
 					</div>
 					<div className="flex flex-col text-black p-2">
 						{list.map((item, index) => (
