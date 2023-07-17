@@ -1,11 +1,10 @@
-import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeftLong, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { v4 as uuid } from "uuid";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
-import { currUserSelector } from "../../feaures/auth/auth.selectors";
+import { getTaskSelector } from "../../feaures/taskGroup/taskGroup.selectors";
 import { taskGroupActions } from "../../feaures/taskGroup/taskGroup.slice";
 
 interface CustomElements extends HTMLFormControlsCollection {
@@ -22,8 +21,11 @@ const taskSchema = yup.object().shape({
 	description: yup.string().min(3).defined().required(),
 });
 
-const CreateTask = () => {
-	const currUser = useSelector(currUserSelector);
+const EditTask = () => {
+	const { id } = useParams();
+	const navigate = useNavigate();
+
+	const task = useSelector(getTaskSelector(id as string, false));
 	const dispatch = useDispatch();
 
 	const [errors, setErrors] = useState<{ [k: string]: string | null }>({});
@@ -41,14 +43,15 @@ const CreateTask = () => {
 				},
 				{ abortEarly: false },
 			);
+
 			dispatch(
-				taskGroupActions.createTask({
-					task: { id: uuid(), isCompleted: false, ...result },
-					owner: currUser as string,
+				taskGroupActions.updateTask({
+					id: id as string,
+					isCompleted: false,
+					task: { ...result },
 				}),
 			);
-			ref.current?.reset();
-			console.log("task created!");
+			navigate("/tasks");
 		} catch (error: unknown) {
 			const errs: typeof errors = {};
 
@@ -68,12 +71,14 @@ const CreateTask = () => {
 		setErrors(errs);
 	};
 
+	if (!task) throw new Error("task not found");
+
 	return (
 		<div className="mx-auto max-w-lg space-y-2">
-			<h1 className="text-2xl">Create a new task</h1>
+			<h1 className="text-2xl">Edit your task</h1>
 			<form onSubmit={handleSubmit} className="flex flex-col space-y-2" ref={ref}>
 				<div className="flex flex-col">
-					<label htmlFor="task_title">Edit task: {}</label>
+					<label htmlFor="task_title">Enter a title</label>
 					{errors.title && (
 						<label htmlFor="task_title" className="text-red-500 text-sm">
 							{errors.title}
@@ -84,6 +89,7 @@ const CreateTask = () => {
 						name="title"
 						id="task_title"
 						className="p-1"
+						defaultValue={task.title}
 						onChange={handleChange}
 					/>
 				</div>
@@ -100,11 +106,12 @@ const CreateTask = () => {
 						name="description"
 						id="task_description"
 						className="p-1"
+						defaultValue={task.description}
 						onChange={handleChange}
 					/>
 				</div>
 				<button type="submit" className="border border-black p-2 rounded-md">
-					Create a task
+					Save <FontAwesomeIcon icon={faFloppyDisk} />
 				</button>
 			</form>
 			<Link to="/tasks" tabIndex={0} className="underline">
@@ -114,4 +121,4 @@ const CreateTask = () => {
 	);
 };
 
-export default CreateTask;
+export default EditTask;

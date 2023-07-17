@@ -1,6 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { authActions } from "../feaures/auth/auth.slice";
 
 const Navbar = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const handleLogout = () => {
+		dispatch(authActions.logoutUser());
+		navigate("/login", { replace: true });
+	};
+
 	return (
 		<nav className="sticky flex justify-center items-center space-x-32 h-[8vh] border border-black">
 			<NavLink
@@ -20,7 +29,7 @@ const Navbar = () => {
 			>
 				Create a task
 			</NavLink>
-			<button type="button" className="underline underline-offset-2">
+			<button type="button" className="underline underline-offset-2" onClick={handleLogout}>
 				Logout
 			</button>
 		</nav>

@@ -4,6 +4,7 @@ import Error404 from "./404";
 import Login from "./login";
 import Tasks from "./tasks";
 import CreateTask from "./tasks/create";
+import EditTask from "./tasks/edit";
 
 export const loginRoute: RouteObject = {
 	path: "login",
@@ -20,6 +21,11 @@ export const taskRoute: RouteObject = {
 		{
 			path: "create",
 			element: <CreateTask />,
+			errorElement: <Error404 />,
+		},
+		{
+			path: "edit/:id",
+			element: <EditTask />,
 			errorElement: <Error404 />,
 		},
 	],

@@ -8,6 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { taskGroupActions } from "../feaures/taskGroup/taskGroup.slice";
 import { ITask } from "../types";
 
@@ -22,6 +23,7 @@ const Task = ({ task: { id, description, title, isCompleted }, index }: Props) =
 	const handleComplete = (val: boolean) => {
 		dispatch(taskGroupActions.completeTask({ id, isCompleted: val }));
 	};
+
 	return (
 		<Draggable draggableId={id} index={index}>
 			{(provided) => (
@@ -34,10 +36,12 @@ const Task = ({ task: { id, description, title, isCompleted }, index }: Props) =
 							<div className="flex items-center mt-2">
 								<span className="text-xl">{title}</span>
 								<div className="space-x-2 ml-auto">
-									<FontAwesomeIcon
-										icon={faPen}
-										className="hover:text-lime-300 hover:cursor-pointer"
-									/>
+									<Link to={`edit/${id}`} relative="path">
+										<FontAwesomeIcon
+											icon={faPen}
+											className="hover:text-lime-300 hover:cursor-pointer"
+										/>
+									</Link>
 									{isCompleted ? (
 										<FontAwesomeIcon
 											icon={faCircleCheck}
