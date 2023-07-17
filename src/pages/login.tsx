@@ -1,7 +1,11 @@
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import * as yup from "yup";
+import { isAuthSelector } from "../feaures/auth/auth.selectors";
+import { authActions } from "../feaures/auth/auth.slice";
 
 interface CustomElements extends HTMLFormControlsCollection {
 	username: HTMLInputElement;
@@ -14,25 +18,24 @@ interface TaskForm extends HTMLFormElement {
 
 const loginSchema = yup.object().shape({
 	username: yup.string().min(3).defined().required(),
-	pass: yup.string().min(3).defined().required(),
 });
 
 const Login = () => {
+	const isAuthenticated = useSelector(isAuthSelector);
+	const dispatch = useDispatch();
+
 	const [errors, setErrors] = useState<{ [k: string]: string | null }>({});
 
 	const handleSubmit = async (event: FormEvent<TaskForm>) => {
 		event.preventDefault();
-		const { username, pass } = event.currentTarget.elements;
+		const { username } = event.currentTarget.elements;
 
 		try {
 			const result = await loginSchema.validate(
-				{
-					username: username.value,
-					pass: pass.value,
-				},
+				{ username: username.value },
 				{ abortEarly: false },
 			);
-			console.log(result);
+			dispatch(authActions.loginUser(result.username));
 		} catch (error: unknown) {
 			const errs: typeof errors = {};
 
@@ -52,6 +55,8 @@ const Login = () => {
 		setErrors(errs);
 	};
 
+	if (isAuthenticated) return <Navigate to="/tasks" />;
+
 	return (
 		<div className="mx-auto max-w-lg space-y-2 mt-5">
 			<h1 className="text-2xl">Login</h1>
@@ -66,19 +71,6 @@ const Login = () => {
 						name="username"
 						id="username"
 						placeholder="Enter username"
-						onChange={handleChange}
-						className="p-1"
-					/>
-				</div>
-
-				<div className="flex flex-col">
-					<label htmlFor="pass">Enter password</label>
-					{errors.pass && <label className="text-sm text-red-500">{errors.pass}</label>}
-					<input
-						type="password"
-						name="pass"
-						id="pass"
-						placeholder="Enter password"
 						onChange={handleChange}
 						className="p-1"
 					/>
