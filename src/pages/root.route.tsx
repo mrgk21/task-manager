@@ -1,12 +1,10 @@
-import { lazy } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import RootLayout from "../layouts/root.layout";
+import Error404 from "./404";
 import Login from "./login";
-
-const Error404 = lazy(() => import("./404"));
-const CreateTask = lazy(() => import("./tasks/create"));
-const EditTask = lazy(() => import("./tasks/edit"));
-const Tasks = lazy(() => import("./tasks"));
+import Tasks from "./tasks";
+import CreateTask from "./tasks/create";
+import EditTask from "./tasks/edit";
 
 export const rootRoute: RouteObject = {
 	path: "/",
