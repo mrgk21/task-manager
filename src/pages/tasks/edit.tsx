@@ -26,9 +26,9 @@ const EditTask = () => {
 
 	const { id } = useParams();
 	const [params] = useSearchParams();
-	const isCompleted = params.get("isCompleted");
+	const isCompleted = !(params.get("isCompleted") == undefined);
 
-	const task = useSelector(getTaskSelector(id as string, !(isCompleted == undefined)));
+	const task = useSelector(getTaskSelector(id as string, isCompleted));
 	const dispatch = useDispatch();
 
 	const [errors, setErrors] = useState<{ [k: string]: string | null }>({});
@@ -50,7 +50,7 @@ const EditTask = () => {
 			dispatch(
 				taskGroupActions.updateTask({
 					id: id as string,
-					isCompleted: false,
+					isCompleted,
 					task: { ...result },
 				}),
 			);
