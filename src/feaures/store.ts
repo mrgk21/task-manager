@@ -9,7 +9,7 @@ import { taskGroupReducer } from "./taskGroup/taskGroup.slice";
 const persistConfig = {
 	key: "root",
 	storage,
-	blacklist: ["auth"],
+	blacklist: [],
 };
 
 const reducer = combineReducers({

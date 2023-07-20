@@ -1,10 +1,12 @@
+import { Suspense, lazy } from "react";
 import { Navigate, RouteObject } from "react-router-dom";
 import RootLayout from "../layouts/root.layout";
 import Error404 from "./404";
 import Login from "./login";
-import Tasks from "./tasks";
 import CreateTask from "./tasks/create";
 import EditTask from "./tasks/edit";
+
+const Tasks = lazy(() => import("./tasks"));
 
 export const rootRoute: RouteObject = {
 	path: "/",
@@ -23,7 +25,14 @@ export const taskRoute: RouteObject = {
 	element: <RootLayout />,
 	errorElement: <Error404 />,
 	children: [
-		{ index: true, element: <Tasks /> },
+		{
+			index: true,
+			element: (
+				<Suspense fallback={<div>loading...</div>}>
+					<Tasks />
+				</Suspense>
+			),
+		},
 		{
 			path: "create",
 			element: <CreateTask />,
